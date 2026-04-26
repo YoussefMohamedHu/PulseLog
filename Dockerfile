@@ -10,4 +10,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 COPY --from=build /app .
 ENV ASPNETCORE_ENVIRONMENT = "Development"
-ENTRYPOINT ["dotnet", "WebApplication1.dll"]
+ENTRYPOINT ["dotnet", "PulseLog.Api.dll"]
