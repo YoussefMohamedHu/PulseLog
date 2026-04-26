@@ -1,0 +1,6 @@
+@PulseLog.Api_HostAddress = http://localhost:5241
+
+GET {{PulseLog.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
