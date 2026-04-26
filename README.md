@@ -1,1 +1,3 @@
 # PulseLog
+
+ PulseLog is a backend API system that enables internal IT incident reporting, assignment, tracking, and resolution. The system supports three user roles—reporters who submit technical issues, support agents who manage the incident lifecycle, and administrators who monitor system health. Built on ASP.NET 8 with PostgreSQL and JWT-based authentication, the system provides complete audit trails, structured logging with correlation ID tracing, and resilient email notifications. Key capabilities include full incident lifecycle management from creation through resolution, background scanning for unassigned incidents, and comprehensive security features including PII masking and role-based access control.
