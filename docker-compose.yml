@@ -1,0 +1,40 @@
+
+services:
+  app:
+    container_name: pulse_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=pulselog;Username=postgres;Password=postgres
+      - Jwt__Key=xz85d015aa2afe0858c20jn90dbf20d871ob512cadeem20
+      - Jwt__ExpiresInMinutes=60
+    ports: 
+      - "5100:80"
+      - "5101:443"
+    depends_on: 
+      - db
+    networks:
+      - mynetwork  
+
+  db:
+    image: postgres:latest
+    container_name: pulse_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pulselog
+    volumes:
+      - sql_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+
+volumes:
+  sql_data:
+
+networks:
+  mynetwork:
+    driver: bridge
