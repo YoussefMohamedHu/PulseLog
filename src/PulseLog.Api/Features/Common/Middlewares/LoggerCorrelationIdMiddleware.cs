@@ -2,7 +2,7 @@ using Serilog.Context;
 
 namespace PulseLog.Api.Features.Common.Middlewares;
 
-public class LoggerCorrelationId : IMiddleware
+public class LoggerCorrelationIdMiddleware : IMiddleware
 {
     private const string CorrelationIdHeader = "X-Correlation-ID";
 
