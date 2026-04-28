@@ -3,6 +3,7 @@ using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using PulseLog.Api.Features.Common.Middlewares;
 using PulseLog.Api.Infrastructure.Persistence;
 using Serilog;
 using System.Text;
@@ -31,8 +32,6 @@ public static class Registerations
             });
 
         services.AddAuthorization();
-
-        services.AddTransient<PulseLog.Api.Features.Common.Middlewares.LoggerCorrelationId>();
 
         services.AddHangfire(config => config
             .UsePostgreSqlStorage(c => c
