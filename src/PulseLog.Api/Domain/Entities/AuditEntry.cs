@@ -9,7 +9,7 @@ public class AuditEntry
 {
     public int Id { get; set; }
     public string EntityName { get; set; } = string.Empty;
-    public AuditEntryActionEnum Action { get; set; }
+    public AuditEntryAction Action { get; set; }
     public int PerformedBy { get; set; }
     public DateTime Timestamp { get; set; }
 }

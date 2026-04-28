@@ -3,7 +3,7 @@ namespace PulseLog.Api.Domain.ValueObjects;
 /// <summary>
 /// Represents the action performed in an audit entry.
 /// </summary>
-public enum AuditEntryActionEnum
+public enum AuditEntryAction
 {
     Created = 0,
     Updated = 1,
