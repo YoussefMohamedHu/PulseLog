@@ -27,7 +27,7 @@ public class RegisterEndpoint : IEndpoint
             }
         })
         .Produces<RegisterResult>(StatusCodes.Status201Created)
-        .Produces(StatusCodes.Status400BadRequest)
+        .ProducesValidationProblem(StatusCodes.Status400BadRequest)
         .Produces(StatusCodes.Status409Conflict)
         .WithTags("Authentication")
         .WithName("Register")

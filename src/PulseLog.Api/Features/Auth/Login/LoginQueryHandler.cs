@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PulseLog.Api.Domain.Entities;
 using PulseLog.Api.Infrastructure.Persistence;
 
@@ -9,9 +10,9 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, LoginResult>
 {
     private readonly AppDbContext _dbContext;
     private readonly AuthService _authService;
-    private readonly ILogger _logger;
+    private readonly ILogger<LoginQueryHandler> _logger;
 
-    public LoginQueryHandler(AppDbContext dbContext, AuthService authService,ILogger logger)
+    public LoginQueryHandler(AppDbContext dbContext, AuthService authService,ILogger<LoginQueryHandler> logger)
     {
         _logger = logger;
         _dbContext = dbContext;

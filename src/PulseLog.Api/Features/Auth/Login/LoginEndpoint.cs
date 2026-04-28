@@ -26,7 +26,7 @@ public class LoginEndpoint : IEndpoint
             }
         })
         .Produces<LoginResult>(StatusCodes.Status200OK)
-        .Produces(StatusCodes.Status400BadRequest)
+        .ProducesValidationProblem(StatusCodes.Status400BadRequest)
         .Produces(StatusCodes.Status401Unauthorized)
         .WithTags("Authentication")
         .WithName("Login")

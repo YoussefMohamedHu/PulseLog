@@ -1,6 +1,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PulseLog.Api.Domain.Entities;
 using PulseLog.Api.Infrastructure.Persistence;
 using PulseLog.Api.Domain.ValueObjects;
@@ -11,9 +12,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterR
 {
     private readonly AppDbContext _dbContext;
     private readonly AuthService _authService;
-    private readonly ILogger _logger;
+    private readonly ILogger<RegisterCommandHandler> _logger;
 
-    public RegisterCommandHandler(AppDbContext dbContext, AuthService authService,ILogger logger)
+    public RegisterCommandHandler(AppDbContext dbContext, AuthService authService,ILogger<RegisterCommandHandler> logger)
     {
         _logger = logger;
         _dbContext = dbContext;
