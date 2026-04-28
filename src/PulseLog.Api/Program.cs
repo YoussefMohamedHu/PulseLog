@@ -40,9 +40,11 @@ try
         app.MapScalarApiReference();
     }
 
+
     app.UseHangfireDashboard(builder.Configuration["Hangfire:DashboardPath"] ?? "/hangfire");
 
-    app.UseMiddleware<LoggerCorrelationId>();
+    app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+    app.UseMiddleware<LoggerCorrelationIdMiddleware>();
 
     app.UseSerilogRequestLogging();
 
