@@ -49,6 +49,17 @@ public class SubmitIncidentCommandHandler : IRequestHandler<SubmitIncidentComman
             CreatedAt = DateTime.UtcNow
         };
         _dbContext.Incidents.Add(incident);
+        
+        var auditEntry = new AuditEntry
+        {
+            Action = AuditEntryAction.Created,
+            EntityName = nameof(Domain.Entities.Incident),
+            PerformedBy = userId,
+            Timestamp = DateTime.UtcNow
+        };
+
+        _dbContext.AuditEntries.Add(auditEntry);
+        
         await _dbContext.SaveChangesAsync();
 
         //TODO publishing email to all agents in case of critical incident
