@@ -70,7 +70,7 @@ This document covers the complete backend API. Email notifications are simulated
 ```
 ┌──────────┐     ┌──────────────────┐     ┌──────────────────┐
 │  Client  │────▶│   PulseLog API   │────▶│   SQL Database   │
-│  (HTTP)  │     │   (ASP.NET 8)    │     │   (PostgreSQL)   │
+│  (HTTP)  │     │   (ASP.NET 10)    │     │   (PostgreSQL)   │
 └──────────┘     └────────┬─────────┘     └──────────────────┘
                           │
                           │ (stub/fake)
