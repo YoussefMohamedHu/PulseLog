@@ -10,6 +10,8 @@ using PulseLog.Api.Infrastructure.Persistence;
 using PulseLog.Api.Infrastructure.Services;
 using PulseLog.Api.Infrastructure.WebLayer;
 using Serilog;
+using Polly;
+using Polly.Retry;
 using System.Text;
 
 namespace PulseLog.Api.Infrastructure;
@@ -45,5 +47,16 @@ public static class Registerations
             .UsePostgreSqlStorage(c => c
                 .UseNpgsqlConnection(configuration.GetConnectionString("DefaultConnection"))));
         services.AddHangfireServer();
+
+        services.AddResiliencePipeline("email-pipeline", builder =>
+        {
+            builder.AddRetry(new RetryStrategyOptions
+            {
+                MaxRetryAttempts = 3,
+                BackoffType = DelayBackoffType.Exponential,
+                UseJitter = true,
+                Delay = TimeSpan.FromSeconds(1)
+            });
+        });
     }
 }
