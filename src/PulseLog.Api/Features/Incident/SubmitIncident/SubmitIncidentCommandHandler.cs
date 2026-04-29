@@ -3,6 +3,9 @@ using PulseLog.Api.Infrastructure.Persistence;
 using PulseLog.Api.Domain.Entities;
 using MediatR;
 using PulseLog.Api.Domain.ValueObjects;
+using PulseLog.Api.Features.Common.Exceptions;
+using PulseLog.Api.Infrastructure.Jobs;
+using Hangfire;
 namespace PulseLog.Api.Features.Incident.SubmitIncident;
 
 public class SubmitIncidentCommandHandler : IRequestHandler<SubmitIncidentCommand, IncidentResponse>
@@ -15,8 +18,7 @@ public class SubmitIncidentCommandHandler : IRequestHandler<SubmitIncidentComman
     {
         _currentUser = currentUser;
         _dbContext = dbContext;
-         _logger = logger;
-        
+        _logger = logger;
     }
 
     public async Task<IncidentResponse> Handle(SubmitIncidentCommand command, CancellationToken ct)
@@ -62,11 +64,16 @@ public class SubmitIncidentCommandHandler : IRequestHandler<SubmitIncidentComman
         
         await _dbContext.SaveChangesAsync();
 
-        //TODO publishing email to all agents in case of critical incident
-
        _logger.LogInformation("Incident with id {Id} has been created by user {UserId}", incident.Id, userId);
 
+       var reporter = await _dbContext.Users.FindAsync(incident.ReportedBy);
+       if(reporter is null)
+       {
+            _logger.LogError("Reporter user with Id {ReporterId} not found for incident {IncidentId}.", incident.ReportedBy, incident.Id);
+            throw new NotFoundException($"Reporter with Id {incident.ReportedBy} not found.");
+       }
 
+        BackgroundJob.Enqueue<SendEmailJob>(job => job.Execute(userId, reporter.Email, "New Incident Submitted", $"A new incident has been submitted by user {userId}."));
 
         return new IncidentResponse
         {
