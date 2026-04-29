@@ -2,11 +2,17 @@ using Serilog.Context;
 
 namespace PulseLog.Api.Features.Common.Middlewares;
 
-public class LoggerCorrelationIdMiddleware : IMiddleware
+public class LoggerCorrelationIdMiddleware 
 {
+    private readonly RequestDelegate _next;
     private const string CorrelationIdHeader = "X-Correlation-ID";
 
-    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    public LoggerCorrelationIdMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task InvokeAsync(HttpContext context)
     {
         var correlationId = GetOrCreateCorrelationId(context);
 
@@ -14,7 +20,7 @@ public class LoggerCorrelationIdMiddleware : IMiddleware
 
         using (LogContext.PushProperty("CorrelationId", correlationId))
         {
-            await next(context);
+            await _next(context);
         }
     }
 
