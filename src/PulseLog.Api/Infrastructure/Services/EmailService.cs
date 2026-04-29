@@ -1,20 +1,20 @@
-using PulseLog.Api.Domain.ValueObjects;
+using Microsoft.Extensions.Logging;
 using PulseLog.Api.Features.Common.Abstractions.Services;
 
 namespace PulseLog.Api.Infrastructure.Services;
 
-public class EmailService : IEmailService
+public class EmailService(ILogger<EmailService> logger) : IEmailService
 {
-    public bool SendEmailToUser(int userId)
+    public Task SendEmailToUser(string userEmail, string subject, string body)
     {
-        //TODO sending email to a single user
-        throw new NotImplementedException();
+        logger.LogInformation("Sending email to {UserEmail} with subject {Subject}", userEmail, subject);
+        return Task.CompletedTask;
     }
 
-    public bool BroadcastEmailByUserRole(UserRole userRole)
+    public Task BroadcastEmailToUsers(IEnumerable<string> userEmails, string subject, string body)
     {
-        //TODO sending email to all users within this role
-        throw new NotImplementedException();
+        var emailList = string.Join(", ", userEmails);
+        logger.LogInformation("Broadcasting email to {UserEmails} with subject {Subject}", emailList, subject);
+        return Task.CompletedTask;
     }
-
 }

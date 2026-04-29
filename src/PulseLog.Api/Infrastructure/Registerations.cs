@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PulseLog.Api.Features.Common.Abstractions;
+using PulseLog.Api.Features.Common.Abstractions.Services;
 using PulseLog.Api.Features.Common.Middlewares;
 using PulseLog.Api.Infrastructure.Persistence;
+using PulseLog.Api.Infrastructure.Services;
 using PulseLog.Api.Infrastructure.WebLayer;
 using Serilog;
 using System.Text;
@@ -37,7 +39,8 @@ public static class Registerations
 
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUser, CurrentUserManager>();
-        
+        services.AddScoped<IEmailService, EmailService>();
+
         services.AddHangfire(config => config
             .UsePostgreSqlStorage(c => c
                 .UseNpgsqlConnection(configuration.GetConnectionString("DefaultConnection"))));

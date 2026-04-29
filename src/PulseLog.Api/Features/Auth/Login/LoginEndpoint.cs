@@ -9,7 +9,7 @@ public class LoginEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/auth/login", async (LoginQuery query, IMediator mediator) =>
+        app.MapPost("/api/auth/login", async (LoginQuery query, ISender mediator) =>
         {
             try
             {

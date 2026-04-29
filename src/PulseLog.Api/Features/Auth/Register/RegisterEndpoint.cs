@@ -9,7 +9,7 @@ public class RegisterEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/auth/register", async (RegisterCommand command, IMediator mediator) =>
+        app.MapPost("/api/auth/register", async (RegisterCommand command, ISender mediator) =>
         {
             try
             {

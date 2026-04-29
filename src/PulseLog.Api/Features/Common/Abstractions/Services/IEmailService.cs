@@ -1,9 +1,7 @@
-using PulseLog.Api.Domain.ValueObjects;
-
 namespace PulseLog.Api.Features.Common.Abstractions.Services;
 
 public interface IEmailService
 {
-    public bool SendEmailToUser(int userId);
-    public bool BroadcastEmailByUserRole(UserRole userRole);
+    Task SendEmailToUser(string userEmail, string subject, string body);
+    Task BroadcastEmailToUsers(IEnumerable<string> userEmails, string subject, string body);
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using PulseLog.Api.Domain.Entities;
 using PulseLog.Api.Infrastructure.Persistence;
 using PulseLog.Api.Domain.ValueObjects;
+using PulseLog.Api.Features.Common.Exceptions;
 
 namespace PulseLog.Api.Features.Auth.Register;
 
@@ -28,7 +29,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterR
         {
             _logger.LogWarning("Registration attempt with existing email: {Email}", request.Email);
             
-            throw new InvalidOperationException("Email already exists");
+            throw new ConflictException("Email already exists");
         }
 
         var passwordHash = _authService.HashPassword(request.Password);
