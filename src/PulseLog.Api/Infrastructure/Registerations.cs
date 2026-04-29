@@ -39,6 +39,9 @@ public static class Registerations
 
         services.AddAuthorization();
 
+        services.AddHealthChecks()
+            .AddNpgSql(configuration.GetConnectionString("DefaultConnection")!);
+
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUser, CurrentUserManager>();
         services.AddScoped<IEmailService, EmailService>();
