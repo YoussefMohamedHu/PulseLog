@@ -13,6 +13,7 @@ using PulseLog.Api.Infrastructure;
 using Hangfire;
 using Scalar.AspNetCore;
 using Serilog;
+using PulseLog.Api.Infrastructure.Jobs;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
@@ -58,6 +59,12 @@ try
             var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         }
     }
+
+    RecurringJob.AddOrUpdate<UnassignedIncidentsJob>(
+        "check-unassigned-incidents",
+        job => job.Execute(),
+        Cron.MinuteInterval(5)
+    );
 
     app.Run();
 }
