@@ -18,6 +18,43 @@ public class Incident
     public DateTime? ResolvedAt { get; set; } = null;
     public DateTime? AssignedAt { get; set; } = null;
     public int ReassignmentCount { get; set; } = 0;
+
+    public bool UpdateStatus(IncidentStatus newStatus)
+    {
+        if (!GetValidTransitionsMatrix().TryGetValue(Status, out var validTransitions))
+        {
+            return false;
+        }
+
+        if (Array.IndexOf(validTransitions, newStatus) < 0)
+        {
+            return false;
+        }
+
+        Status = newStatus;
+
+        if (newStatus == IncidentStatus.Resolved)
+        {
+            ResolvedAt = DateTime.UtcNow;
+        }
+        else if (newStatus == IncidentStatus.Open)
+        {
+            ResolvedAt = null;
+        }
+
+        return true;
+    }
+
+    private static IReadOnlyDictionary<IncidentStatus, IncidentStatus[]> GetValidTransitionsMatrix()
+    {
+        return new Dictionary<IncidentStatus, IncidentStatus[]>
+        {
+            [IncidentStatus.Open] = [IncidentStatus.InProgress],
+            [IncidentStatus.InProgress] = [IncidentStatus.Open, IncidentStatus.Resolved],
+            [IncidentStatus.Resolved] = [IncidentStatus.Open, IncidentStatus.Closed],
+            [IncidentStatus.Closed] = [IncidentStatus.Open]
+        };
+    }
 }
 
 
