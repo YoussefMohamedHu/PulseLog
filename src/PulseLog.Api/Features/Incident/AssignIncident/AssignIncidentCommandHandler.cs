@@ -55,8 +55,17 @@ public class AssignIncidentCommandHandler : IRequestHandler<AssignIncidentComman
             throw new ConflictException($"Incident with Id {command.IncidentId} is already assigned.");
         }
 
+        if (!incident.UpdateStatus(IncidentStatus.InProgress))
+        {
+            _logger.LogWarning(
+                "Incident {IncidentId} cannot transition from {CurrentStatus} to {NewStatus}.",
+                incident.Id,
+                incident.Status,
+                IncidentStatus.InProgress);
+            throw new ConflictException($"Incident status cannot transition from {incident.Status} to {IncidentStatus.InProgress}.");
+        }
+
         incident.AssignedTo = userId;
-        incident.Status = IncidentStatus.InProgress;
         incident.AssignedAt = DateTime.UtcNow;
 
         var auditEntry = new AuditEntry
